@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2021-10-04T20:49:45 IST" name="Default suite" finished-at="2021-10-04T20:50:32 IST" duration-ms="46284">
+    <groups>
+    </groups>
+    <test started-at="2021-10-04T20:49:45 IST" name="Default test" finished-at="2021-10-04T20:50:32 IST" duration-ms="46284">
+      <class name="Tests.ScenarioOne">
+        <test-method signature="testNew()[pri:0, instance:Tests.ScenarioOne@cad498c]" started-at="2021-10-04T20:49:46 IST" name="testNew" finished-at="2021-10-04T20:50:32 IST" duration-ms="46237" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testNew -->
+      </class> <!-- Tests.ScenarioOne -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
