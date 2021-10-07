@@ -1,24 +1,31 @@
 package Actions;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import ExternalFileFunctions.ExternalFunctions;
 import PageObjects.*;
 import SeleniumCoreFunctions.SeleniumCommands;
 
 public class ActionSetOne {
 
-	SeleniumCommands sc = new SeleniumCommands();
-	HomePage hp = new HomePage();
-	SearchResultsPage srp = new SearchResultsPage();
+	SeleniumCommands seliniumCommands = new SeleniumCommands();
+	HomePage homePageObject = new HomePage();
+	SearchResultsPage searchResultsPageObject = new SearchResultsPage();
+	FilterPage filterPageObject = new FilterPage();
+	ProductPage productPageObject = new ProductPage();
+	ExternalFunctions externalFunctionObject = new ExternalFunctions();
 
 	public void openUrl(String url) throws Exception {
 
-		sc.init(url);
-		hp.clickOnCloseLogin();
+		seliniumCommands.init(url);
+		homePageObject.clickOnCloseLogin();
 
 	}
 
 	public void clean() {
 
-		sc.cleanUp();
+		seliniumCommands.cleanUp();
 
 	}
 
@@ -32,11 +39,11 @@ public class ActionSetOne {
 	public void selectCategory(String categoryName, String subCategoryName, String furtherSubCategoryName)
 			throws Exception {
 
-		hp.clickOnHomeButton();
+		homePageObject.clickOnHomeButton();
 //		Thread.sleep(3000);
-		hp.hoverOnCategory(categoryName);
+		homePageObject.hoverOnCategory(categoryName);
 //		Thread.sleep(3000);
-		hp.clickOnFurtherSubCategory(subCategoryName, furtherSubCategoryName);
+		homePageObject.clickOnFurtherSubCategory(subCategoryName, furtherSubCategoryName);
 
 		// sc.hoverOnWebElement(categoryName);
 
@@ -49,7 +56,7 @@ public class ActionSetOne {
 	 */
 	public void selectSortMethod(String sortBy) throws Exception {
 
-		srp.clickSortMethod(sortBy);
+		searchResultsPageObject.clickSortMethod(sortBy);
 
 	}
 
@@ -60,8 +67,8 @@ public class ActionSetOne {
 	 */
 	public void selectMinMaxPriceFilter(String min, String max, String byOpratorForSelect) throws Exception {
 
-		srp.selectMinPriceFilter(min, byOpratorForSelect);
-		srp.selectMaxPriceFilter(max, byOpratorForSelect);
+		filterPageObject.selectMinPriceFilter(min, byOpratorForSelect);
+		filterPageObject.selectMaxPriceFilter(max, byOpratorForSelect);
 
 	}
 
@@ -79,8 +86,28 @@ public class ActionSetOne {
 	 * the product. Eg: Brand -> HP Parameter : brandName : HP Created On : 29th
 	 * Sept 2021 Updated On : 30th Sept 2021
 	 */
-	void selectBrandFilter(String brandName) {
+	public void selectBrandFilter(String brandName) throws Exception {
 
+		boolean rslt = filterPageObject.isBrandExpanded(brandName);
+		if (rslt) {
+			filterPageObject.clickOnBrandName(brandName);
+		} else {
+			filterPageObject.clickOnBrandFilter();
+			filterPageObject.clickOnBrandName(brandName);
+		}
+
+	}
+	String filterAppliedXpath = "//*[text()='Filters']/ancestor::section//*[text()='{brand}']";
+	public void verifyFilterApplied(String filter)
+	{
+		if(filterPageObject.getFilterStatus(filterAppliedXpath.replace("{brand}", filter), "Xpath"))
+		{
+			System.out.println("Successfully verified the filter is applied. Applied Filter : " + filter );
+		}
+		else
+		{
+			System.out.println("Could not apply the filter. Filter to be applied: " + filter);
+		}
 	}
 
 	/*
@@ -145,7 +172,9 @@ public class ActionSetOne {
 	 * : productName : HP Envy Core i5 10th Gen Created On : 29th Sept 2021 Updated
 	 * On : 30th Sept 2021
 	 */
-	void selectProduct(String productName) {
+	public void selectProduct(String productName) throws Exception {
+
+		searchResultsPageObject.clickProduct(productName);
 
 	}
 
@@ -157,7 +186,7 @@ public class ActionSetOne {
 	 * 2021 Updated On : 30th Sept 2021
 	 */
 	void verifyRamSpecification(String ramSpecification) {
-
+		// filterPageObject.isRamSpecDisplayed();
 	}
 
 	/*
@@ -189,12 +218,39 @@ public class ActionSetOne {
 
 	}
 
+	void verifySellerName(String sellerName) throws Exception {
+
+		String name = productPageObject.getProductSellerName();
+
+		if (name.equalsIgnoreCase(sellerName)) {
+
+		} else {
+
+		}
+
+	}
+	
+	void verifyWarrantyDetails(String warrantyDetails) throws Exception {
+		
+		String name = productPageObject.getProductWarrantyDetails();
+
+		if (name.equalsIgnoreCase(warrantyDetails)) {
+
+		} else {
+
+		}
+
+		
+	}
+
 	/*
 	 * Name : Sayooj S Kiran Description : This method is to add a item into cart by
 	 * clicking "Add to Cart" button. Parameter : NIL Created On : 29th Sept 2021
 	 * Updated On : 30th Sept 2021
 	 */
-	void addToCart() {
+	public void addToCart() throws Exception {
+
+		productPageObject.clickAddToCartButton();
 
 	}
 
@@ -204,6 +260,13 @@ public class ActionSetOne {
 	 * Created On : 29th Sept 2021 Updated On : 30th Sept 2021
 	 */
 	void removeItemFromCart(String productName) {
+
+	}
+
+	public void accesExcelFiles(String excelLocation) throws IOException {
+
+		ArrayList<String> a = new ArrayList<String>();
+		externalFunctionObject.excelFileHandling(excelLocation);
 
 	}
 

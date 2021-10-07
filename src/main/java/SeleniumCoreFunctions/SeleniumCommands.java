@@ -1,6 +1,6 @@
 package SeleniumCoreFunctions;
 
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,7 +20,7 @@ public class SeleniumCommands {
 		driver = new ChromeDriver();
 		driver.get(url);
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+//		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
 	}
 
@@ -33,38 +33,34 @@ public class SeleniumCommands {
 	public void click(String locator, String byOperator) throws Exception {
 
 		WebElement ele = findElement(locator, byOperator);
-		ele.click();
+		if (ele == null)
+		{
+			throw new Exception("Could not clink on the element. Locator: "+ locator);
+		}
+		else {
+			ele.click();
+		}
 
 	}
 
 	public WebElement findElement(String locator, String byOperator) throws Exception {
-		WebElement ele =null;
-		for (int count = 0; count < 60; count++)
-		{
+		WebElement ele = null;
+		Thread.sleep(1000);
+		for (int count = 0; count < 10; count++) {
 			try {
 				ele = driver.findElement(getByOperator(locator, byOperator));
-				if (ele==null)
-				{
+				if (ele == null) {
 					Thread.sleep(1000);
-				}
-				else if (ele.isDisplayed() && ele.isEnabled())
-				{
+				} else if (ele.isDisplayed() && ele.isEnabled()) {
 					break;
-				}
-				else 
-				{
+				} else {
 					Thread.sleep(1000);
 				}
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				Thread.sleep(1000);
 			}
 		}
-		if (ele == null)
-		{
-			throw new Exception("Could not find the element: " + locator);
-		}
+		
 		return ele;
 	}
 
@@ -99,14 +95,14 @@ public class SeleniumCommands {
 
 	}
 
-	public void selectDropdown(String val, String xpathIdentifier, String  byOperator, String selectBy) throws Exception {
-		
-		
+	public void selectDropdown(String val, String xpathIdentifier, String byOperator, String selectBy)
+			throws Exception {
+
 		WebElement ele = findElement(xpathIdentifier, byOperator);
 		Select selectObj = new Select(ele);
-		
+
 		switch (selectBy) {
-		case "value" : 
+		case "value":
 		case "Value":
 			selectObj.selectByValue(val);
 			break;
@@ -119,7 +115,36 @@ public class SeleniumCommands {
 		default:
 			selectObj.selectByValue(val);
 		}
+
+	}
+
+	public boolean isElementVisible(String locator, String byOperator) 
+	{
+		WebElement ele=null;
+		try {
+			ele = findElement(locator, byOperator);
+		}
+		catch (Exception e)
+		{
+			
+		}
+		if (ele ==null)
+		{
+			return false;
+		}
+		else 
+		{
+			return ele.isDisplayed();
+		}
 		
+		
+		
+	}
+
+	public String getText(String locator,String byOperator) throws Exception {
+		WebElement ele = findElement(locator, byOperator);
+		String name= ele.getText();
+		return name;
 	}
 
 }

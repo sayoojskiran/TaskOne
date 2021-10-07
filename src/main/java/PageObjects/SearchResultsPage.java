@@ -5,28 +5,27 @@ import SeleniumCoreFunctions.SeleniumCommands;
 public class SearchResultsPage {
 
 	SeleniumCommands seleniumCommands = new SeleniumCommands();
-	String selectMinFilter = "//option[@value='Min']/parent::select";
-	String selectMaxFilter = "//option[@value='Max']/parent::select";
+
+	String processorFilter = "//div[text()='Processor']";
+	String processorSpecificationFilter = "//div[text()='Core i3']/parent::label";
+	String processorMoreOption = "//span[text()='18 MORE']/parent::div";
+	String brandFilter = "//div[text()='Brand']";
+	String osFilter = "//div[text()='Operating System']";
+	String osSpecificationFilter = "//div[text()='Windows 10']/parent::label";
+	String ramCapacityFilter = "//div[text()='RAM Capacity']";
+	String ramCapacitySpecificationFilter = "//div[text()='4 GB']/parent::label";
+
+	String sortMethodXpath = "//span[text()='Sort By']/following-sibling::div[text()='{sortBy}']";
+	String productNameXpath = "//a[contains(text(),'{productName}')]";
 
 	public void clickSortMethod(String sortBy) throws Exception {
-		String sortMethodXpath = "//span[text()='Sort By']/following-sibling::div[text()='" + sortBy + "']";
-		seleniumCommands.click(sortMethodXpath, "Xpath");
-
+		String xpathValue = sortMethodXpath.replace("{sortBy}", sortBy);
+		seleniumCommands.click(xpathValue, "Xpath");
 	}
 
-	public void selectMinPriceFilter(String min, String byOpratorForSelect) throws Exception {
-
-		seleniumCommands.selectDropdown(min, selectMinFilter, byOpratorForSelect, "value");
-		// String dropdownXpath = "//option[@value'"+xpathIdentifier+"']/..";
-
-	}
-
-	public void selectMaxPriceFilter(String max, String byOpratorForSelect) throws Exception {
-
-		// Thread.sleep(3000);
-		seleniumCommands.selectDropdown(max, selectMaxFilter, byOpratorForSelect, "value");
-		// seleniumCommands.selectDropdown(max, byOpratorForSelect, "Max");
-
+	public void clickProduct(String productName) throws Exception {
+		String xpathValue = productNameXpath.replace("{productName}", productName);
+		seleniumCommands.click(xpathValue, "Xpath");
 	}
 
 }

@@ -1,16 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2021-10-04T20:49:45 IST" name="Default suite" finished-at="2021-10-04T20:50:32 IST" duration-ms="46284">
+  <suite started-at="2021-10-07T12:26:54 IST" name="Default suite" finished-at="2021-10-07T12:27:32 IST" duration-ms="38357">
     <groups>
     </groups>
-    <test started-at="2021-10-04T20:49:45 IST" name="Default test" finished-at="2021-10-04T20:50:32 IST" duration-ms="46284">
+    <test started-at="2021-10-07T12:26:54 IST" name="Default test" finished-at="2021-10-07T12:27:32 IST" duration-ms="38357">
       <class name="Tests.ScenarioOne">
-        <test-method signature="testNew()[pri:0, instance:Tests.ScenarioOne@cad498c]" started-at="2021-10-04T20:49:46 IST" name="testNew" finished-at="2021-10-04T20:50:32 IST" duration-ms="46237" status="PASS">
+        <test-method signature="testNew()[pri:0, instance:Tests.ScenarioOne@71a8adcf]" started-at="2021-10-07T12:26:54 IST" name="testNew" finished-at="2021-10-07T12:27:32 IST" duration-ms="38314" status="FAIL">
+          <exception class="java.lang.Exception">
+            <message>
+              <![CDATA[Could not clink on the element. Locator: //button[text()='ADD TO CART']]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.Exception: Could not clink on the element. Locator: //button[text()='ADD TO CART']
+at SeleniumCoreFunctions.SeleniumCommands.click(SeleniumCommands.java:38)
+at PageObjects.ProductPage.clickAddToCartButton(ProductPage.java:42)
+at Actions.ActionSetOne.addToCart(ActionSetOne.java:253)
+at Tests.ScenarioOne.testNew(ScenarioOne.java:26)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:133)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:598)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:824)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:794)
+at org.testng.TestRunner.run(TestRunner.java:596)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:377)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:371)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:332)
+at org.testng.SuiteRunner.run(SuiteRunner.java:276)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1212)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1134)
+at org.testng.TestNG.runSuites(TestNG.java:1063)
+at org.testng.TestNG.run(TestNG.java:1031)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.Exception -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testNew -->
+        <test-method is-config="true" signature="cleanUp()[pri:0, instance:Tests.ScenarioOne@71a8adcf]" started-at="2021-10-07T12:27:32 IST" name="cleanUp" finished-at="2021-10-07T12:27:32 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- cleanUp -->
       </class> <!-- Tests.ScenarioOne -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->

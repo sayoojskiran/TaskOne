@@ -5,6 +5,7 @@
     <classes>
       <class name="Tests.ScenarioOne">
         <methods>
+          <include name="cleanUp"/>
           <include name="testNew"/>
         </methods>
       </class> <!-- Tests.ScenarioOne -->

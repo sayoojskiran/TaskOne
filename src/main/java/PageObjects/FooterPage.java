@@ -5,6 +5,11 @@ import SeleniumCoreFunctions.SeleniumCommands;
 public class FooterPage {
 
 	SeleniumCommands seleniumCommands = new SeleniumCommands();
+	
+	String aboutUsXpath = "//a[text()='About Us']";
+	String onCareersXpath = "//a[text()='Careers']";
+	String contactUsXpath = "//a[text()='Contact Us']";
+	
 
 	public void clickOnContactUs() throws Exception {
 
