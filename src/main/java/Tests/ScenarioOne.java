@@ -20,10 +20,19 @@ public class ScenarioOne {
 		testActions.selectMinMaxPriceFilter("30000", "40000", "Xpath");
 		testActions.selectBrandFilter("HP");
 		testActions.verifyFilterApplied("₹30000-₹40000");
-		//Thread.sleep(1000);
 		testActions.verifyFilterApplied("HP");
-		testActions.selectProduct("HP Ryzen 3 Dual Core 3250U - (8 GB/256 GB SSD/Windows 1...");
-		testActions.addToCart();	
+		testActions.selectProduct("HP Ryzen 3 Dual Core 3250U - (8 GB/256 GB SSD/Windows 1");
+//		Thread.sleep(2000);
+		testActions.verifyProductName("HP Ryzen 3 Dual Core 3250U");
+		testActions.verifyProductPrice("HP Ryzen 3 Dual Core 3250U");
+		testActions.verifyProductRating();
+		
+		testActions.addToCart();
+		
+		testActions.increaseNumberofItemsInCart("HP Ryzen 3 Dual Core 3250U");
+		testActions.verifyPoductTotalPrice("HP Ryzen 3 Dual Core 3250U");
+		
+		 
 		
 //		testActions.accesExcelFiles(excelLocation);
 

@@ -1,5 +1,8 @@
 package PageObjects;
 
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 import SeleniumCoreFunctions.SeleniumCommands;
 
 public class SearchResultsPage {
@@ -17,6 +20,8 @@ public class SearchResultsPage {
 
 	String sortMethodXpath = "//span[text()='Sort By']/following-sibling::div[text()='{sortBy}']";
 	String productNameXpath = "//a[contains(text(),'{productName}')]";
+	String productRatingXpath = "//a[contains(text(),'{productName}')]/following-sibling::div/span/div"; 
+	String productPriceXpath = "//a[contains(text(),'{productName}')]/following-sibling::a/div/div[1]";
 
 	public void clickSortMethod(String sortBy) throws Exception {
 		String xpathValue = sortMethodXpath.replace("{sortBy}", sortBy);
@@ -27,5 +32,24 @@ public class SearchResultsPage {
 		String xpathValue = productNameXpath.replace("{productName}", productName);
 		seleniumCommands.click(xpathValue, "Xpath");
 	}
+
+	public String getProductRating(String productName) throws Exception {
+		String xpathValue = productRatingXpath.replace("{productName}", productName);
+		String rating= seleniumCommands.getText(xpathValue, "Xpath");
+		return rating;
+	}
+
+	public String getProductPrice(String productName) throws Exception {
+		String xpathValue = productPriceXpath.replace("{productName}", productName);
+		String price= seleniumCommands.getText(xpathValue, "Xpath");
+		return price;
+	}
+
+	public List<WebElement> getSearchResults() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

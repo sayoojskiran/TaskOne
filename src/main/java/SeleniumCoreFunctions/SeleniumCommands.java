@@ -1,5 +1,7 @@
 package SeleniumCoreFunctions;
 
+import java.util.Set;
+
 //import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -26,7 +28,7 @@ public class SeleniumCommands {
 
 	public void cleanUp() {
 
-		driver.close();
+		driver.quit();
 
 	}
 
@@ -35,7 +37,7 @@ public class SeleniumCommands {
 		WebElement ele = findElement(locator, byOperator);
 		if (ele == null)
 		{
-			throw new Exception("Could not clink on the element. Locator: "+ locator);
+			throw new Exception("Could not click on the element. Locator: "+ locator);
 		}
 		else {
 			ele.click();
@@ -145,6 +147,28 @@ public class SeleniumCommands {
 		WebElement ele = findElement(locator, byOperator);
 		String name= ele.getText();
 		return name;
+	}
+	public String getAttribute(String locator,String byOperator,String attributeName) throws Exception {
+		WebElement ele = findElement(locator, byOperator);
+		String name= ele.getAttribute(attributeName);
+		return name;
+	}
+	public String getCurrentWindowHandle()
+	{
+		String parentWindow = driver.getWindowHandle();
+		return parentWindow;
+		
+	}
+	public Set<String> getAllWindow()
+	{
+		Set<String> parentWindow = driver.getWindowHandles();
+		return parentWindow;
+		
+	}
+
+	public void switchToWindow(String currentWin) {
+		driver.switchTo().window(currentWin);
+		
 	}
 
 }

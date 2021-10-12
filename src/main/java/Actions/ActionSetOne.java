@@ -1,7 +1,14 @@
 package Actions;
 
 import java.io.IOException;
+import java.sql.Driver;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import ExternalFileFunctions.ExternalFunctions;
 import PageObjects.*;
@@ -9,23 +16,25 @@ import SeleniumCoreFunctions.SeleniumCommands;
 
 public class ActionSetOne {
 
-	SeleniumCommands seliniumCommands = new SeleniumCommands();
+	SeleniumCommands seleniumCommands = new SeleniumCommands();
 	HomePage homePageObject = new HomePage();
+	HeaderPage headerPageObject = new HeaderPage();
 	SearchResultsPage searchResultsPageObject = new SearchResultsPage();
 	FilterPage filterPageObject = new FilterPage();
 	ProductPage productPageObject = new ProductPage();
+	CheckoutPage checkoutPageObject = new CheckoutPage();
 	ExternalFunctions externalFunctionObject = new ExternalFunctions();
 
 	public void openUrl(String url) throws Exception {
 
-		seliniumCommands.init(url);
+		seleniumCommands.init(url);
 		homePageObject.clickOnCloseLogin();
 
 	}
 
 	public void clean() {
 
-		seliniumCommands.cleanUp();
+		seleniumCommands.cleanUp();
 
 	}
 
@@ -39,7 +48,7 @@ public class ActionSetOne {
 	public void selectCategory(String categoryName, String subCategoryName, String furtherSubCategoryName)
 			throws Exception {
 
-		homePageObject.clickOnHomeButton();
+		homePageObject.clickOnTopOffers();
 //		Thread.sleep(3000);
 		homePageObject.hoverOnCategory(categoryName);
 //		Thread.sleep(3000);
@@ -97,15 +106,13 @@ public class ActionSetOne {
 		}
 
 	}
+
 	String filterAppliedXpath = "//*[text()='Filters']/ancestor::section//*[text()='{brand}']";
-	public void verifyFilterApplied(String filter)
-	{
-		if(filterPageObject.getFilterStatus(filterAppliedXpath.replace("{brand}", filter), "Xpath"))
-		{
-			System.out.println("Successfully verified the filter is applied. Applied Filter : " + filter );
-		}
-		else
-		{
+
+	public void verifyFilterApplied(String filter) {
+		if (filterPageObject.getFilterStatus(filterAppliedXpath.replace("{brand}", filter), "Xpath")) {
+			System.out.println("Successfully verified the filter is applied. Applied Filter : " + filter);
+		} else {
 			System.out.println("Could not apply the filter. Filter to be applied: " + filter);
 		}
 	}
@@ -165,6 +172,17 @@ public class ActionSetOne {
 	void selectStorageSizeFilter(String storageSize) {
 
 	}
+	
+	public static void getCartNumber() {
+		WebElement cart = headerPageObject.getCartItems();
+		if (cart == null) {
+			cartNumber = 0;
+		} else {
+			String num = headerPageObject.getCartNumberOfItems();
+			cartNumber = Integer.parseInt(num);
+		}
+		
+	} 
 
 	/*
 	 * Name : Sayooj S Kiran Description : This method is to click on "Product"
@@ -172,9 +190,42 @@ public class ActionSetOne {
 	 * : productName : HP Envy Core i5 10th Gen Created On : 29th Sept 2021 Updated
 	 * On : 30th Sept 2021
 	 */
+	static int cartNumber;
+	static String productRating;
+	static int productPriceInt;
+	static String productPrice;
+	static String parentWindow="";
 	public void selectProduct(String productName) throws Exception {
 
+		//getCartNumber();
+		productRating = searchResultsPageObject.getProductRating(productName);
+		productPrice = searchResultsPageObject.getProductPrice(productName);
+		productPrice = productPrice.replace("₹", "");
+		
+//		System.out.println("Product Price : " + productPrice);
+		
+		String productPriceTemp = productPrice.replace(",", "");
+		productPriceInt = Integer.parseInt(productPriceTemp);
+		
+//		System.out.println("Product Price : " + productPrice);
+
 		searchResultsPageObject.clickProduct(productName);
+		
+		
+		
+		parentWindow =  seleniumCommands.getCurrentWindowHandle();
+		Set<String> allHandle = seleniumCommands.getAllWindow();
+		Iterator<String> winIterator= allHandle.iterator();
+		while(winIterator.hasNext())
+		{
+			String currentWin =winIterator.next();
+			if(!parentWindow.equals(currentWin))
+			{
+				seleniumCommands.switchToWindow(currentWin);
+			}
+		}
+		
+		
 
 	}
 
@@ -196,9 +247,17 @@ public class ActionSetOne {
 	 * : productName : HP Envy Core i5 10th Gen Created On : 29th Sept 2021 Updated
 	 * On : 30th Sept 2021
 	 */
-	void verifyProductName(String productName) {
+	public void verifyProductName(String productName) throws Exception {
 
-		// Verify product
+		WebElement ele = productPageObject.getProductName(productName);
+
+		if (ele == null) {
+			System.out.println(
+					"Couldn't verify the product name \nThe product name doesnot match the given product name : "
+							+ productName);
+		} else {
+			System.out.println("Successfully verified the product name : " + productName);
+		}
 
 	}
 
@@ -208,9 +267,29 @@ public class ActionSetOne {
 	 * ₹78,990 Existing Product Price -> ₹78,990 Parameter : productPrice : ₹78,990
 	 * Created On : 29th Sept 2021 Updated On : 30th Sept 2021
 	 */
-	void verifyProductPrice(String productPrice) {
+	public void verifyProductPrice(String productName) throws Exception {
 
-		// Verify price
+//		System.out.println(" <><><<><><> "+productName);
+		WebElement ele = productPageObject.getProductPrice(productName, productPrice);
+
+		if (ele == null) {
+			System.out.println(
+					"Couldn't verify the product price \nThe price in both pages doesnot match : " + productPriceInt);
+		} else {
+			System.out.println("Successfully verified the product price : " + productPriceInt);
+		}
+
+	}
+
+	public void verifyProductRating() throws Exception {
+
+		boolean val = productPageObject.getProductRating(productRating);
+
+		if (val) {
+			System.out.println("Successfully verified the product rating : " + productRating);
+		} else {
+			System.out.println("Couldn't verify the product rating : " + productRating);
+		}
 
 	}
 
@@ -229,9 +308,9 @@ public class ActionSetOne {
 		}
 
 	}
-	
+
 	void verifyWarrantyDetails(String warrantyDetails) throws Exception {
-		
+
 		String name = productPageObject.getProductWarrantyDetails();
 
 		if (name.equalsIgnoreCase(warrantyDetails)) {
@@ -240,7 +319,6 @@ public class ActionSetOne {
 
 		}
 
-		
 	}
 
 	/*
@@ -268,6 +346,48 @@ public class ActionSetOne {
 		ArrayList<String> a = new ArrayList<String>();
 		externalFunctionObject.excelFileHandling(excelLocation);
 
+	}
+
+	public void verifyPriceInSearchResultsPage(int minPrice, int maxPrice) throws Exception {
+		List<WebElement> allProducts = searchResultsPageObject.getSearchResults();
+
+		for (WebElement ele : allProducts) {
+			String actualPrice = ele.findElement(By.xpath("")).getText();
+			actualPrice = actualPrice.replace("₹", "");
+			actualPrice = actualPrice.replace(",", "");
+
+			int actualPriceInt = Integer.parseInt(actualPrice);
+			if (minPrice <= actualPriceInt && maxPrice >= actualPriceInt) {
+
+			}
+		}
+	}
+
+	public void increaseNumberofItemsInCart(String productName) throws Exception {
+		
+		checkoutPageObject.increaseTheProductCount(productName);
+		
+		
+	}
+
+	public void verifyPoductTotalPrice(String productName) throws Exception {
+		String price = checkoutPageObject.getPriceOfProduct(productName);
+		price = price.replace("₹", "");
+		price = price.replace(",", "");
+		int priceInt = Integer.parseInt(price);
+		
+		String qtyOfProduct = checkoutPageObject.getQuantityOfProduct(productName);
+		int qtyOfProductInt = Integer.parseInt(qtyOfProduct);
+		
+		if(priceInt == (qtyOfProductInt * productPriceInt)) {
+			
+			System.out.println("Total product price verified successfully and is : "+priceInt);
+			
+		}
+		else {
+			System.out.println("Total product price cannot be verified\nPlease try again");
+		}
+		
 	}
 
 }

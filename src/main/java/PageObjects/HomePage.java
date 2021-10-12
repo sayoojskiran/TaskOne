@@ -8,6 +8,7 @@ public class HomePage {
 
 	String closeLoginXpath = "//button[text()='✕']";
 	String homeButtonXpath = "//div[text()='Home']/parent::a/..";
+	String topOffersXpath = "//img[@alt='Top Offers']";
 
 	public void clickOnCloseLogin() throws Exception {
 
@@ -19,6 +20,10 @@ public class HomePage {
 
 		seleniumCommands.click(homeButtonXpath, "Xpath");
 
+	}
+	
+	public void clickOnTopOffers() throws Exception {
+		seleniumCommands.click(topOffersXpath,"Xpath");
 	}
 
 	public void hoverOnCategory(String categoryName) throws Exception {
