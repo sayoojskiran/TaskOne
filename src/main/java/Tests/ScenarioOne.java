@@ -30,9 +30,10 @@ public class ScenarioOne {
 		testActions.addToCart();
 		
 		testActions.increaseNumberofItemsInCart("HP Ryzen 3 Dual Core 3250U");
+		testActions.verifyProductCount("HP Ryzen 3 Dual Core 3250U");
 		testActions.verifyPoductTotalPrice("HP Ryzen 3 Dual Core 3250U");
 		
-		 
+		testActions.verifyCartNumber();
 		
 //		testActions.accesExcelFiles(excelLocation);
 

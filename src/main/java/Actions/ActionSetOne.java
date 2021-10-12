@@ -173,7 +173,7 @@ public class ActionSetOne {
 
 	}
 	
-	public static void getCartNumber() {
+	public int getCartNumber() throws Exception {
 		WebElement cart = headerPageObject.getCartItems();
 		if (cart == null) {
 			cartNumber = 0;
@@ -181,7 +181,7 @@ public class ActionSetOne {
 			String num = headerPageObject.getCartNumberOfItems();
 			cartNumber = Integer.parseInt(num);
 		}
-		
+		return cartNumber;
 	} 
 
 	/*
@@ -191,13 +191,14 @@ public class ActionSetOne {
 	 * On : 30th Sept 2021
 	 */
 	static int cartNumber;
+	static int currentCartNumber;
 	static String productRating;
 	static int productPriceInt;
 	static String productPrice;
 	static String parentWindow="";
 	public void selectProduct(String productName) throws Exception {
 
-		//getCartNumber();
+		currentCartNumber = getCartNumber();
 		productRating = searchResultsPageObject.getProductRating(productName);
 		productPrice = searchResultsPageObject.getProductPrice(productName);
 		productPrice = productPrice.replace("₹", "");
@@ -329,6 +330,7 @@ public class ActionSetOne {
 	public void addToCart() throws Exception {
 
 		productPageObject.clickAddToCartButton();
+		
 
 	}
 
@@ -363,7 +365,11 @@ public class ActionSetOne {
 		}
 	}
 
+	static int qtyOfProductInt;
 	public void increaseNumberofItemsInCart(String productName) throws Exception {
+		
+		String qtyOfProduct = checkoutPageObject.getQuantityOfProduct(productName);
+		qtyOfProductInt = Integer.parseInt(qtyOfProduct);
 		
 		checkoutPageObject.increaseTheProductCount(productName);
 		
@@ -386,6 +392,32 @@ public class ActionSetOne {
 		}
 		else {
 			System.out.println("Total product price cannot be verified\nPlease try again");
+		}
+		
+	}
+
+	public void verifyCartNumber() throws Exception {
+		seleniumCommands.closeCurrentWindow();
+		seleniumCommands.switchToWindow(parentWindow);
+		seleniumCommands.refreshWindow();
+		int num = getCartNumber();
+		if (currentCartNumber == (num - 1)) {
+			System.out.println("The number of items in cart is successfully and the number of items is : "+ num);
+		}
+		else {
+			System.out.println("The number of items in the cart cannot be verified");
+		}
+	}
+
+	public void verifyProductCount(String productName) throws Exception {
+		String qtyOfProduct = checkoutPageObject.getQuantityOfProduct(productName);
+		int tempQtyOfProduct = Integer.parseInt(qtyOfProduct);
+		
+		if (qtyOfProductInt == (tempQtyOfProduct - 1)) {
+			System.out.println("The Product quantity is successfully verifed for the product : "+ productName);
+		}
+		else {
+			System.out.println("The Product quantity in the cart cannot be verified");
 		}
 		
 	}

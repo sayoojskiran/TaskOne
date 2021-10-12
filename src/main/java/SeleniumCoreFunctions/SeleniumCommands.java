@@ -31,6 +31,12 @@ public class SeleniumCommands {
 		driver.quit();
 
 	}
+	
+	public void closeCurrentWindow() {
+
+		driver.close();
+
+	}
 
 	public void click(String locator, String byOperator) throws Exception {
 
@@ -168,6 +174,11 @@ public class SeleniumCommands {
 
 	public void switchToWindow(String currentWin) {
 		driver.switchTo().window(currentWin);
+		
+	}
+
+	public void refreshWindow() {
+		driver.navigate().refresh();
 		
 	}
 
