@@ -1,5 +1,6 @@
 package SeleniumCoreFunctions;
 
+import java.util.List;
 import java.util.Set;
 
 //import java.util.concurrent.TimeUnit;
@@ -31,7 +32,7 @@ public class SeleniumCommands {
 		driver.quit();
 
 	}
-	
+
 	public void closeCurrentWindow() {
 
 		driver.close();
@@ -41,11 +42,9 @@ public class SeleniumCommands {
 	public void click(String locator, String byOperator) throws Exception {
 
 		WebElement ele = findElement(locator, byOperator);
-		if (ele == null)
-		{
-			throw new Exception("Could not click on the element. Locator: "+ locator);
-		}
-		else {
+		if (ele == null) {
+			throw new Exception("Could not click on the element. Locator: " + locator);
+		} else {
 			ele.click();
 		}
 
@@ -68,7 +67,18 @@ public class SeleniumCommands {
 				Thread.sleep(1000);
 			}
 		}
-		
+
+		return ele;
+	}
+
+	public List<WebElement> findElements(String locator, String byOperator) throws Exception {
+		List<WebElement> ele = null;
+		for (int count = 0; count < 60; count++) {
+			ele = driver.findElements(getByOperator(locator, byOperator));
+		}
+		if (ele == null) {
+			throw new Exception("Could not find the element: " + locator);
+		}
 		return ele;
 	}
 
@@ -126,60 +136,53 @@ public class SeleniumCommands {
 
 	}
 
-	public boolean isElementVisible(String locator, String byOperator) 
-	{
-		WebElement ele=null;
+	public boolean isElementVisible(String locator, String byOperator) {
+		WebElement ele = null;
 		try {
 			ele = findElement(locator, byOperator);
+		} catch (Exception e) {
+
 		}
-		catch (Exception e)
-		{
-			
-		}
-		if (ele ==null)
-		{
+		if (ele == null) {
 			return false;
-		}
-		else 
-		{
+		} else {
 			return ele.isDisplayed();
 		}
-		
-		
-		
+
 	}
 
-	public String getText(String locator,String byOperator) throws Exception {
+	public String getText(String locator, String byOperator) throws Exception {
 		WebElement ele = findElement(locator, byOperator);
-		String name= ele.getText();
+		String name = ele.getText();
 		return name;
 	}
-	public String getAttribute(String locator,String byOperator,String attributeName) throws Exception {
+
+	public String getAttribute(String locator, String byOperator, String attributeName) throws Exception {
 		WebElement ele = findElement(locator, byOperator);
-		String name= ele.getAttribute(attributeName);
+		String name = ele.getAttribute(attributeName);
 		return name;
 	}
-	public String getCurrentWindowHandle()
-	{
+
+	public String getCurrentWindowHandle() {
 		String parentWindow = driver.getWindowHandle();
 		return parentWindow;
-		
+
 	}
-	public Set<String> getAllWindow()
-	{
+
+	public Set<String> getAllWindow() {
 		Set<String> parentWindow = driver.getWindowHandles();
 		return parentWindow;
-		
+
 	}
 
 	public void switchToWindow(String currentWin) {
 		driver.switchTo().window(currentWin);
-		
+
 	}
 
 	public void refreshWindow() {
 		driver.navigate().refresh();
-		
+
 	}
 
 }

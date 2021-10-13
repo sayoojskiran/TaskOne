@@ -19,7 +19,7 @@ public class ProductPage {
 	public WebElement getProductName(String productName) throws Exception {
 
 		String xpathValue = productNameXpath.replace("{productName}", productName);
-		System.out.println("Name Xpath : " + xpathValue);
+//		System.out.println("Name Xpath : " + xpathValue);
 		WebElement ele = seleniumCommands.findElement(xpathValue, "Xpath");
 
 		return ele;

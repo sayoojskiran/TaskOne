@@ -97,23 +97,23 @@ public class ActionSetOne {
 	 */
 	public void selectBrandFilter(String brandName) throws Exception {
 
-		boolean rslt = filterPageObject.isBrandExpanded(brandName);
+		boolean rslt = filterPageObject.isFilterExpanded(brandName);
 		if (rslt) {
-			filterPageObject.clickOnBrandName(brandName);
+			filterPageObject.clickOnSpecificFilter(brandName);
 		} else {
-			filterPageObject.clickOnBrandFilter();
-			filterPageObject.clickOnBrandName(brandName);
+			filterPageObject.clickOnFilterSection("Brand");
+			filterPageObject.clickOnSpecificFilter(brandName);
 		}
 
 	}
 
-	String filterAppliedXpath = "//*[text()='Filters']/ancestor::section//*[text()='{brand}']";
+	String filterAppliedXpath = "//*[text()='Filters']/ancestor::section//*[text()='{filter}']";
 
 	public void verifyFilterApplied(String filter) {
-		if (filterPageObject.getFilterStatus(filterAppliedXpath.replace("{brand}", filter), "Xpath")) {
-			System.out.println("Successfully verified the filter is applied. Applied Filter : " + filter);
+		if (filterPageObject.getFilterStatus(filterAppliedXpath.replace("{filter}", filter), "Xpath")) {
+			System.out.println("\nSuccessfully verified the filter is applied. Applied Filter : " + filter);
 		} else {
-			System.out.println("Could not apply the filter. Filter to be applied: " + filter);
+			System.out.println("\nCould not apply the filter. Filter to be applied: " + filter);
 		}
 	}
 
@@ -160,7 +160,15 @@ public class ActionSetOne {
 	 * of the product. Eg: RAM Capacity -> 8 GB Parameter : ramSize : 8 GB Created
 	 * On : 29th Sept 2021 Updated On : 30th Sept 2021
 	 */
-	void selectRamSizeFilter(String ramSize) {
+	public void selectRamSizeFilter(String ramSize) throws Exception {
+
+		boolean rslt = filterPageObject.isFilterExpanded(ramSize);
+		if (rslt) {
+			filterPageObject.clickOnSpecificFilter(ramSize);
+		} else {
+			filterPageObject.clickOnFilterSection("RAM Capacity");
+			filterPageObject.clickOnSpecificFilter(ramSize);
+		}
 
 	}
 
@@ -172,7 +180,7 @@ public class ActionSetOne {
 	void selectStorageSizeFilter(String storageSize) {
 
 	}
-	
+
 	public int getCartNumber() throws Exception {
 		WebElement cart = headerPageObject.getCartItems();
 		if (cart == null) {
@@ -182,7 +190,7 @@ public class ActionSetOne {
 			cartNumber = Integer.parseInt(num);
 		}
 		return cartNumber;
-	} 
+	}
 
 	/*
 	 * Name : Sayooj S Kiran Description : This method is to click on "Product"
@@ -195,38 +203,33 @@ public class ActionSetOne {
 	static String productRating;
 	static int productPriceInt;
 	static String productPrice;
-	static String parentWindow="";
+	static String parentWindow = "";
+
 	public void selectProduct(String productName) throws Exception {
 
 		currentCartNumber = getCartNumber();
 		productRating = searchResultsPageObject.getProductRating(productName);
 		productPrice = searchResultsPageObject.getProductPrice(productName);
 		productPrice = productPrice.replace("₹", "");
-		
+
 //		System.out.println("Product Price : " + productPrice);
-		
+
 		String productPriceTemp = productPrice.replace(",", "");
 		productPriceInt = Integer.parseInt(productPriceTemp);
-		
+
 //		System.out.println("Product Price : " + productPrice);
 
 		searchResultsPageObject.clickProduct(productName);
-		
-		
-		
-		parentWindow =  seleniumCommands.getCurrentWindowHandle();
+
+		parentWindow = seleniumCommands.getCurrentWindowHandle();
 		Set<String> allHandle = seleniumCommands.getAllWindow();
-		Iterator<String> winIterator= allHandle.iterator();
-		while(winIterator.hasNext())
-		{
-			String currentWin =winIterator.next();
-			if(!parentWindow.equals(currentWin))
-			{
+		Iterator<String> winIterator = allHandle.iterator();
+		while (winIterator.hasNext()) {
+			String currentWin = winIterator.next();
+			if (!parentWindow.equals(currentWin)) {
 				seleniumCommands.switchToWindow(currentWin);
 			}
 		}
-		
-		
 
 	}
 
@@ -254,10 +257,11 @@ public class ActionSetOne {
 
 		if (ele == null) {
 			System.out.println(
-					"Couldn't verify the product name \nThe product name doesnot match the given product name : "
+					"\nCouldn't verify the product name in \"Product Deatils Page\" \nThe product name doesnot match the given product name : "
 							+ productName);
 		} else {
-			System.out.println("Successfully verified the product name : " + productName);
+			System.out.println(
+					"\nSuccessfully verified the product name in \"Product Deatils Page\" and is : " + productName);
 		}
 
 	}
@@ -275,9 +279,11 @@ public class ActionSetOne {
 
 		if (ele == null) {
 			System.out.println(
-					"Couldn't verify the product price \nThe price in both pages doesnot match : " + productPriceInt);
+					"\nCouldn't verify the product price in \"Product Deatils Page\" \nThe price in both pages doesnot match : "
+							+ productPriceInt);
 		} else {
-			System.out.println("Successfully verified the product price : " + productPriceInt);
+			System.out.println("\nSuccessfully verified the product price in \"Product Deatils Page\" and is : "
+					+ productPriceInt);
 		}
 
 	}
@@ -287,9 +293,10 @@ public class ActionSetOne {
 		boolean val = productPageObject.getProductRating(productRating);
 
 		if (val) {
-			System.out.println("Successfully verified the product rating : " + productRating);
+			System.out.println(
+					"\nSuccessfully verified the product rating in \"Product Deatils Page\" : " + productRating);
 		} else {
-			System.out.println("Couldn't verify the product rating : " + productRating);
+			System.out.println("\nCouldn't verify the product rating in \"Product Deatils Page\" : " + productRating);
 		}
 
 	}
@@ -330,7 +337,6 @@ public class ActionSetOne {
 	public void addToCart() throws Exception {
 
 		productPageObject.clickAddToCartButton();
-		
 
 	}
 
@@ -353,27 +359,38 @@ public class ActionSetOne {
 	public void verifyPriceInSearchResultsPage(int minPrice, int maxPrice) throws Exception {
 		List<WebElement> allProducts = searchResultsPageObject.getSearchResults();
 
+		int flag = 1;
 		for (WebElement ele : allProducts) {
-			String actualPrice = ele.findElement(By.xpath("")).getText();
+			String actualPrice = ele.findElement(By.xpath("a/div/div[contains(text(),'₹')][1]")).getText();
 			actualPrice = actualPrice.replace("₹", "");
 			actualPrice = actualPrice.replace(",", "");
 
 			int actualPriceInt = Integer.parseInt(actualPrice);
 			if (minPrice <= actualPriceInt && maxPrice >= actualPriceInt) {
-
+				continue;
+			} else {
+				flag = 0;
 			}
 		}
+		if (flag == 1) {
+			System.out.println(
+					"\nSuccessfully verified the product price & the product price in \"Search Results Page\" is in between "
+							+ minPrice + " and " + maxPrice);
+		} else {
+			System.out.println("The product price in the search results page is not in between given price range");
+		}
+
 	}
 
 	static int qtyOfProductInt;
+
 	public void increaseNumberofItemsInCart(String productName) throws Exception {
-		
+
 		String qtyOfProduct = checkoutPageObject.getQuantityOfProduct(productName);
 		qtyOfProductInt = Integer.parseInt(qtyOfProduct);
-		
+
 		checkoutPageObject.increaseTheProductCount(productName);
-		
-		
+
 	}
 
 	public void verifyPoductTotalPrice(String productName) throws Exception {
@@ -381,19 +398,18 @@ public class ActionSetOne {
 		price = price.replace("₹", "");
 		price = price.replace(",", "");
 		int priceInt = Integer.parseInt(price);
-		
+
 		String qtyOfProduct = checkoutPageObject.getQuantityOfProduct(productName);
 		int qtyOfProductInt = Integer.parseInt(qtyOfProduct);
-		
-		if(priceInt == (qtyOfProductInt * productPriceInt)) {
-			
-			System.out.println("Total product price verified successfully and is : "+priceInt);
-			
+
+		if (priceInt == (qtyOfProductInt * productPriceInt)) {
+
+			System.out.println("\nTotal product price verified successfully and is : " + priceInt);
+
+		} else {
+			System.out.println("\nTotal product price cannot be verified\nPlease try again");
 		}
-		else {
-			System.out.println("Total product price cannot be verified\nPlease try again");
-		}
-		
+
 	}
 
 	public void verifyCartNumber() throws Exception {
@@ -402,24 +418,36 @@ public class ActionSetOne {
 		seleniumCommands.refreshWindow();
 		int num = getCartNumber();
 		if (currentCartNumber == (num - 1)) {
-			System.out.println("The number of items in cart is successfully and the number of items is : "+ num);
-		}
-		else {
-			System.out.println("The number of items in the cart cannot be verified");
+			System.out.println("\nThe number of items in cart is successfully and the number of items is : " + num);
+		} else {
+			System.out.println("\nThe number of items in the cart cannot be verified");
 		}
 	}
 
 	public void verifyProductCount(String productName) throws Exception {
 		String qtyOfProduct = checkoutPageObject.getQuantityOfProduct(productName);
 		int tempQtyOfProduct = Integer.parseInt(qtyOfProduct);
-		
+
 		if (qtyOfProductInt == (tempQtyOfProduct - 1)) {
-			System.out.println("The Product quantity is successfully verifed for the product : "+ productName);
+			System.out.println("\nThe Product quantity " + tempQtyOfProduct
+					+ " is successfully verifed for the product " + productName);
+		} else {
+			System.out.println("\nThe Product quantity in the cart cannot be verified");
 		}
-		else {
-			System.out.println("The Product quantity in the cart cannot be verified");
+
+	}
+
+	public void verifyProductNameCheckoutPage(String productName) throws Exception {
+		WebElement ele = checkoutPageObject.getProductName(productName);
+
+		if (ele == null) {
+			System.out.println(
+					"\nCouldn't verify the product name on \"Checkout Page\" \nThe product name doesnot match the given product name : "
+							+ productName);
+		} else {
+			System.out.println("\nSuccessfully verified the product name : " + productName + " on \"Checkout Page\"");
 		}
-		
+
 	}
 
 }

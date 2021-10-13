@@ -19,9 +19,12 @@ public class ScenarioOne {
 //		testActions.selectSortMethod("Price -- Low to High");
 		testActions.selectMinMaxPriceFilter("30000", "40000", "Xpath");
 		testActions.selectBrandFilter("HP");
+		testActions.selectRamSizeFilter("8 GB");
 		testActions.verifyFilterApplied("₹30000-₹40000");
 		testActions.verifyFilterApplied("HP");
-		testActions.selectProduct("HP Ryzen 3 Dual Core 3250U - (8 GB/256 GB SSD/Windows 1");
+		testActions.verifyFilterApplied("8 GB");
+		testActions.verifyPriceInSearchResultsPage(30000, 40000);
+		testActions.selectProduct("HP Ryzen 3 Dual Core 3250U");
 //		Thread.sleep(2000);
 		testActions.verifyProductName("HP Ryzen 3 Dual Core 3250U");
 		testActions.verifyProductPrice("HP Ryzen 3 Dual Core 3250U");
@@ -29,6 +32,7 @@ public class ScenarioOne {
 		
 		testActions.addToCart();
 		
+		testActions.verifyProductNameCheckoutPage("HP Ryzen 3 Dual Core 3250U");
 		testActions.increaseNumberofItemsInCart("HP Ryzen 3 Dual Core 3250U");
 		testActions.verifyProductCount("HP Ryzen 3 Dual Core 3250U");
 		testActions.verifyPoductTotalPrice("HP Ryzen 3 Dual Core 3250U");

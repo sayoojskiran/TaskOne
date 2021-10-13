@@ -9,8 +9,8 @@ public class FilterPage {
 	String selectMinFilter = "//option[@value='Min']/parent::select";
 	String selectMaxFilter = "//option[@value='Max']/parent::select";
 
-	String brandSpecificationFilter = "//div[text()='{brandName}']/parent::label";
-	String brandFilter = "//div[text()='Brand']";
+	String filterSpecificationXpath = "//div[text()='{filterName}']/parent::label";
+	String filterXpath = "//div[text()='{filter}']";
 
 	public void selectMinPriceFilter(String min, String byOpratorForSelect) throws Exception {
 
@@ -24,8 +24,8 @@ public class FilterPage {
 
 	}
 
-	public boolean isBrandExpanded(String brandName) throws Exception {
-		String xpathValue = brandSpecificationFilter.replace("{brandName}", brandName);
+	public boolean isFilterExpanded(String filterName) throws Exception {
+		String xpathValue = filterSpecificationXpath.replace("{filterName}", filterName);
 		boolean result = seleniumCommands.isElementVisible(xpathValue, "Xpath");
 		return result;
 	}
@@ -35,14 +35,15 @@ public class FilterPage {
 
 	}
 
-	public void clickOnBrandName(String brandName) throws Exception {
-		String xpathValue = brandSpecificationFilter.replace("{brandName}", brandName);
+	public void clickOnSpecificFilter(String filterName) throws Exception {
+		String xpathValue = filterSpecificationXpath.replace("{filterName}", filterName);
 		seleniumCommands.click(xpathValue, "Xpath");
 
 	}
 
-	public void clickOnBrandFilter() throws Exception {
-		seleniumCommands.click(brandFilter, "Xpath");
+	public void clickOnFilterSection(String filter) throws Exception {
+		String xpathValue = filterXpath.replace("{filter}", filter);
+		seleniumCommands.click(xpathValue, "Xpath");
 
 	}
 

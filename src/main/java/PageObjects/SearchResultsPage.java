@@ -22,6 +22,7 @@ public class SearchResultsPage {
 	String productNameXpath = "//a[contains(text(),'{productName}')]";
 	String productRatingXpath = "//a[contains(text(),'{productName}')]/following-sibling::div/span/div"; 
 	String productPriceXpath = "//a[contains(text(),'{productName}')]/following-sibling::a/div/div[1]";
+	String allProductsXpath = "//span[contains(text(),'Showing')]/../../../following-sibling::div//a[@title]/parent::div";
 
 	public void clickSortMethod(String sortBy) throws Exception {
 		String xpathValue = sortMethodXpath.replace("{sortBy}", sortBy);
@@ -45,9 +46,9 @@ public class SearchResultsPage {
 		return price;
 	}
 
-	public List<WebElement> getSearchResults() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<WebElement> getSearchResults() throws Exception {
+		List<WebElement> ele = seleniumCommands.findElements(allProductsXpath, "Xpath");
+		return ele;
 	}
 
 
